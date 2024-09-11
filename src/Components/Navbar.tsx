@@ -1,7 +1,6 @@
-import useStore from "../StateManagement";
 import { getDate, randomColor } from "./util";
 
-export default function Navbar({add}) {
+export default function Navbar({add}:any) {
 
   function newNote(){
     add({style:randomColor(),date:getDate()})

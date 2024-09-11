@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import useStore from "../StateManagement";
 import { colors, getDate } from "./util";
 
-export default function EditModel({ data, hand, status }: any) {
+export default function EditModel({ data, hand }: any) {
   const [editData, setEditData] = useState({ ...data });
   const [selectColorAtive,setSelectColorActive] = useState(false)
   const [selectColor,setSelectColor] = useState(data.style)
-
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ //@ts-expect-error 
   const { editNote, deleteNote } = useStore();
   function handleSubmit() {
     editNote(data.nid, {

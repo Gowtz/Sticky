@@ -4,9 +4,9 @@ import Navbar from "./Components/Navbar";
 import useStore from "./StateManagement";
 import { Note } from "./StateManagement";
 import EditModel from "./Components/EditModel";
-import { getDate, randomColor } from "./Components/util";
 export default function App() {
-  
+ // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+ //@ts-expect-error 
   const { Notes ,addNote}  = useStore();
   const [edit, setEdit] = useState<boolean>(false);
     const [cardData,setCardData] = useState<any>(null)
