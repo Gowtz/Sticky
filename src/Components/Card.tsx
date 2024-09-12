@@ -9,7 +9,7 @@ export default function Card({
 }: {
   data: Note;
 
-  callEditModel: any;
+  callEditModel:(Note:Note)=>void;
 }) {
   const { attributes, listeners, transform, transition, setNodeRef } =
     useSortable({id:data.id});
@@ -22,6 +22,7 @@ export default function Card({
   }
   return (
     <div
+    onClick={() => handleEdit()}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
@@ -30,7 +31,7 @@ export default function Card({
       
     >
       <div
-        onClick={() => handleEdit()}
+
         className="body text-xl leading-relaxed line-clamp-3 lg:line-clamp-3"
       >
         {data?.content}

@@ -16,6 +16,20 @@
       scrollbar-width: none;  /* Firefox */
 }
 }
+@keyframes slide-down {
+  from {
+    transform: translateY(-30%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-left {
+  animation: slide-down 0.2s ;
+}
 
 .card{
   font-family: "Poppins", sans-serif;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import useStore from "../StateManagement";
+import useStore, { Note } from "../StateManagement";
 import { colors, getDate } from "./util";
 
-export default function EditModel({ data, hand }: any) {
+export default function EditModel({ data, hand }:{data:Note,hand:()=>void}) {
   const [editData, setEditData] = useState({ ...data });
   const [selectColorAtive, setSelectColorActive] = useState(false);
   const [selectColor, setSelectColor] = useState(data.style);
@@ -28,12 +28,12 @@ export default function EditModel({ data, hand }: any) {
   return (
     <>
       <div
-        className={`flex body fixed top-0 h-screen w-full z-[150]  items-center justify-center transition-all duration-100 ease-out ${
+        className={`flex body fixed top-0 h-screen w-full z-[150]  items-center justify-center transition-all duration-75 ease-linear ${
           visible ? "scale-100" : "scale-0"
         } `}
       >
         <div
-          className={`card aspect-square  ${selectColor} min-w-0 md:min-w-[600px] max-w-[800px] max-h-[800px] z-[300] m-5 rounded-xl shadow-lg p-10 flex flex-col justify-between`}
+          className={`card aspect-square  ${selectColor} min-w-0 md:min-w-[600px] max-w-[800px] max-h-[800px] z-[300] m-5 rounded-xl shadow-lg p-10 flex flex-col justify-between transition-all duration-75 ease-linear`}
         >
           <div className="body text-2xl md:pt-10 leading-relaxed">
             <textarea
@@ -41,7 +41,8 @@ export default function EditModel({ data, hand }: any) {
               name="content"
               id="content"
               value={editData.content}
-              onChange={(e) => setEditData({ content: e.target.value })}
+
+              onChange={(e) => setEditData(prev =>({ ...prev,content: e.target.value }))}
             ></textarea>
           </div>
           <div className="card-bottom mt-2 lg:mt-5 flex items-center justify-between">
@@ -51,11 +52,11 @@ export default function EditModel({ data, hand }: any) {
                 onClick={() => {
                   setSelectColorActive((prev) => !prev);
                 }}
-                className={`relative edit-btn aspect-square p-4 md:p-6 border-sky-100 border-4 ${selectColor} rounded-full  cursor-pointer`}
+                className={`relative edit-btn aspect-square p-4 md:p-4 shadow-lg border-sky-100 border-[0.8rem] ${selectColor} rounded-full  cursor-pointer`}
               >
                 {selectColorAtive && (
                   <>
-                    <div className="absolute top-14 -right-24  color-select flex  gap-2 bg-white rounded-3xl p-2 border-gray-300 border-2">
+                    <div className={`absolute  top-14 -right-24 animate-slide-left color-select flex  gap-2 bg-white rounded-3xl p-2 transition-all duration-300 ease-linear border-gray-300 border-2 ${selectColorAtive?'scale-100':'scale-0'}`}>
                       {colors.map((ele, index) => (
                         <div
                           key={index}
@@ -69,10 +70,10 @@ export default function EditModel({ data, hand }: any) {
               </div>
               <div
                 onClick={() => {
-                  setVisible(false);
-
-                  hand();
                   deletenote();
+
+                  setVisible(false);
+                  hand();
                 }}
                 className="edit-btn px-3 py-2 md:px-5 md:py-4 rounded-full bg-gray-700 hover:bg-gray-900 transition duration-100 ease-linear cursor-pointer"
               >
@@ -80,9 +81,11 @@ export default function EditModel({ data, hand }: any) {
               </div>
               <div
                 onClick={() => {
-                  setVisible(false);
-                  hand();
                   handleSubmit();
+
+                  setVisible(false);
+
+                  hand();
                 }}
                 className="edit-btn px-3 py-2 md:px-5 md:py-4  rounded-full bg-gray-700 hover:bg-gray-900 transition duration-100 ease-linear cursor-pointer"
               >
@@ -95,6 +98,9 @@ export default function EditModel({ data, hand }: any) {
           className="body fixed h-screen w-full z-[-100] backdrop-blur-sm "
           onClick={() => {
             handleSubmit();
+            setVisible(false);
+
+
             hand();
           }}
         ></div>

@@ -33,8 +33,11 @@ const useStore = create((set, get) => ({
     //@ts-expect-error
     useStore.getState().persistStorage(get().Notes);
   },
-  sortNotes:(data:Note[])=>{
-    set((state:{Notes:Note[]})=>({Notes:data}))
+  sortNotes: (data: Note[]) => {
+    set(() => ({ Notes: data }));
+       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
+    useStore.getState().persistStorage(get().Notes);
   },
   deleteNote: (id: string) => {
     set((state: { Notes: Note[] }) => {
@@ -51,8 +54,8 @@ const useStore = create((set, get) => ({
       const oneNote = state.Notes.find((ele: Note) => ele.id == id);
       return oneNote;
     });
+ 
   },
-
 
   editNote: (id: string, data: Note) => {
     set((state: { Notes: Note[] }) => {

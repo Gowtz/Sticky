@@ -9,8 +9,8 @@ export default function App() {
  //@ts-expect-error 
   const { Notes ,addNote}  = useStore();
   const [edit, setEdit] = useState<boolean>(false);
-    const [cardData,setCardData] = useState<any>(null)
-    function openEditModel(data:Note,nid:number){
+    const [cardData,setCardData] = useState<Note | null>(null)
+    function openEditModel(data:Note,){
         setCardData({...data})
         setEdit(true)
 
@@ -22,7 +22,9 @@ export default function App() {
     // addNote({content:"Some Randome",date:getDate(),style:randomColor()})
   return (
     <>
-      {edit && <EditModel  data={cardData} hand={close} status={edit}/>}
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            @ts-expect-error*/} 
+      {edit && <EditModel  data={cardData!} hand={close} status={edit}/>}
         <div className="relative">
         <Navbar add={addNote}/>
         <CardCollection Notes={Notes} openEditModel={openEditModel}/>
