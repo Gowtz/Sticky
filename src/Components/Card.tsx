@@ -1,24 +1,44 @@
 import { Note } from "../StateManagement";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 export default function Card({
   data,
-  nid,
+
   callEditModel,
 }: {
   data: Note;
-  nid: number;
+
   callEditModel: any;
 }) {
+  const { attributes, listeners, transform, transition, setNodeRef } =
+    useSortable({id:data.id});
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
   function handleEdit() {
-    callEditModel(data, nid);
+    callEditModel(data);
   }
   return (
-    <div onClick={()=> handleEdit()}
-      className={`card aspect-square  ${data?.style}  rounded-xl shadow-lg p-10 flex flex-col justify-between`}
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+      className={`card aspect-square  ${data?.style}  rounded-xl shadow-lg p-10 flex flex-col md:hover:shadow-xl transition-all duration-75 ease-out justify-between`}
+      
     >
-      <div className="body text-xl leading-relaxed line-clamp-3 lg:line-clamp-3">
+      <div
+        onClick={() => handleEdit()}
+        className="body text-xl leading-relaxed line-clamp-3 lg:line-clamp-3"
+      >
         {data?.content}
-        {!data.content && <><p className="text-gray-500 text-2xl"> 📋 NewNote Type ...</p></>}
+        {!data.content && (
+          <>
+            <p className="text-gray-500 text-2xl"> 📋 NewNote Type ...</p>
+          </>
+        )}
       </div>
       <div className="card-bottom mt-5 flex items-center justify-between">
         <div className="date">{data.date}</div>

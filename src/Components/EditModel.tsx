@@ -4,20 +4,20 @@ import { colors, getDate } from "./util";
 
 export default function EditModel({ data, hand }: any) {
   const [editData, setEditData] = useState({ ...data });
-  const [selectColorAtive,setSelectColorActive] = useState(false)
-  const [selectColor,setSelectColor] = useState(data.style)
- // eslint-disable-next-line @typescript-eslint/ban-ts-comment
- //@ts-expect-error 
+  const [selectColorAtive, setSelectColorActive] = useState(false);
+  const [selectColor, setSelectColor] = useState(data.style);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-expect-error
   const { editNote, deleteNote } = useStore();
   function handleSubmit() {
-    editNote(data.nid, {
+    editNote(data.id, {
       content: editData.content,
       style: selectColor,
       date: getDate(),
     });
   }
   function deletenote() {
-    deleteNote(data.nid);
+    deleteNote(data.id);
   }
   const [visible, setVisible] = useState(false);
 
@@ -28,8 +28,8 @@ export default function EditModel({ data, hand }: any) {
   return (
     <>
       <div
-        className={`flex body fixed top-0 h-screen w-full z-[150]  items-center justify-center transition-all duration-75 ease-in-out ${
-          visible ? "opacity-100" : "opacity-0"
+        className={`flex body fixed top-0 h-screen w-full z-[150]  items-center justify-center transition-all duration-100 ease-out ${
+          visible ? "scale-100" : "scale-0"
         } `}
       >
         <div
@@ -47,20 +47,25 @@ export default function EditModel({ data, hand }: any) {
           <div className="card-bottom mt-2 lg:mt-5 flex items-center justify-between">
             <div className="date">{data.date}</div>
             <div className="flex gap-1 md:gap-3">
-            <div
+              <div
                 onClick={() => {
-                  setSelectColorActive(prev => !prev)
+                  setSelectColorActive((prev) => !prev);
                 }}
                 className={`relative edit-btn aspect-square p-4 md:p-6 border-sky-100 border-4 ${selectColor} rounded-full  cursor-pointer`}
               >
-                {
-                  selectColorAtive && <>
-                  <div className="absolute top-14 -right-24  color-select flex  gap-2 bg-white rounded-3xl p-2 border-gray-300 border-2">
-                    {colors.map((ele,index) => <div key={index} onClick={()=>setSelectColor(ele)} className={`aspect-square p-4 hover:shadow-xl transition-all duration-75 ease-linear rounded-full ${ele}`}></div>)}
-                  </div>
+                {selectColorAtive && (
+                  <>
+                    <div className="absolute top-14 -right-24  color-select flex  gap-2 bg-white rounded-3xl p-2 border-gray-300 border-2">
+                      {colors.map((ele, index) => (
+                        <div
+                          key={index}
+                          onClick={() => setSelectColor(ele)}
+                          className={`aspect-square p-4 hover:shadow-xl hover:scale-110 transition-all duration-75 ease-linear rounded-full ${ele}`}
+                        ></div>
+                      ))}
+                    </div>
                   </>
-                }
-
+                )}
               </div>
               <div
                 onClick={() => {
