@@ -8,12 +8,16 @@ import {
     useSensor,
     PointerSensor,
     KeyboardSensor,
+    DragEndEvent,
+    PointerActivationConstraint,
 } from "@dnd-kit/core";
+
 import {
     SortableContext,
     arrayMove,
     sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
+
 import Card from "./Card";
 
 export default function CardCollection({
@@ -24,27 +28,21 @@ export default function CardCollection({
     openEditModel: (Note: Note) => void;
 }) {
     const getPosition = (id: string) => Notes.findIndex((note) => note.id === id);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-expect-error
-    const { sortNotes } = useStore();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-expect-error
-    function handleDrag(e) {
+    const store = useStore();
+    function handleDrag(e:DragEndEvent) {
         const { active, over } = e;
-        if (active.id === over.id) return;
+        if (active.id === over?.id) return;
         console.log(Notes);
         const sortingNotes = () => {
-            const originalPosition = getPosition(active.id);
-            const newPosition = getPosition(over.id);
+            const originalPosition = getPosition(active.id as string);
+            const newPosition = getPosition(over?.id as string );
             return arrayMove(Notes, originalPosition, newPosition);
         };
-        sortNotes(sortingNotes());
+        store.sortNotes(sortingNotes());
     }
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-expect-error
-            activationConstraint: { delay: 150 },
+            activationConstraint: { delay: 150 }  as PointerActivationConstraint
         }),
         useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
@@ -63,7 +61,6 @@ export default function CardCollection({
                             {Notes.map((ele: Note) => (
                                 <React.Fragment key={ele.id}>
                                     <Card data={ele} callEditModel={openEditModel} />
-                                    {/* <DragBox /> */}
                                 </React.Fragment>
                             ))}
                         </SortableContext>
